@@ -11,6 +11,7 @@ volumes:
       type: "nfs"
       device: /home/tuannq/Documents/quocTuan02/php/mycode/sites
       o: bind
+  database_data:
 
 services:
   # container PHP
@@ -41,21 +42,18 @@ services:
       - "9999:80"
       - "443:443"
   # container MYSQL
-  my-mysql:
-    container_name: mysql-product
-    image: "mysql:latest"
-    hostname: mysql
-    restart: always
-    networks:
-      - my-network
-    volumes:
-      - ./db:/var/lib/mysql
-      - ./my.cnf:/ect/mysql/my.conf
+  database:
+    image: mysql:8.0
     ports:
-      - "9936:3306"
+      - "8021:3306"
+    restart: always
+    volumes:
+      - database_data:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=123abc
-      - MYSQL_DATABASE=db_site
-      - MYSQL_USER=tuannq
-      - MYSQL_PASSWORD=sitepass
+      MYSQL_ROOT_PASSWORD: demo
+      MYSQL_DATABASE: demo
+      MYSQL_USER: tuannq
+      MYSQL_PASSWORD: demo
+      MYSQL_ROOT_HOST: '%'
+
 
